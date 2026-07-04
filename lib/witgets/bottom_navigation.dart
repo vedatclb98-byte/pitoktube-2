@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../features/feed/feed_screen.dart';
+import '../features/explore/explore_screen.dart';
+import '../features/upload/upload_screen.dart';
+import '../features/messages/messages_screen.dart';
+import '../features/profile/profile_screen.dart';
+
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
 
@@ -10,12 +16,12 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    const Center(child: Text("🏠 Feed")),
-    const Center(child: Text("🔍 Explore")),
-    const Center(child: Text("➕ Upload")),
-    const Center(child: Text("💬 Messages")),
-    const Center(child: Text("👤 Profile")),
+  final List<Widget> _pages = const [
+    FeedScreen(),
+    ExploreScreen(),
+    UploadScreen(),
+    MessagesScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -33,26 +39,26 @@ class _BottomNavigationState extends State<BottomNavigation> {
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
-            label: 'Feed',
+            label: "Feed",
           ),
           NavigationDestination(
             icon: Icon(Icons.search),
-            label: 'Explore',
+            label: "Explore",
           ),
           NavigationDestination(
             icon: Icon(Icons.add_circle_outline),
             selectedIcon: Icon(Icons.add_circle),
-            label: 'Upload',
+            label: "Upload",
           ),
           NavigationDestination(
             icon: Icon(Icons.chat_bubble_outline),
             selectedIcon: Icon(Icons.chat_bubble),
-            label: 'Messages',
+            label: "Messages",
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
             selectedIcon: Icon(Icons.person),
-            label: 'Profile',
+            label: "Profile",
           ),
         ],
       ),
