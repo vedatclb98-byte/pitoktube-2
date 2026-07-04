@@ -10,6 +10,7 @@ class FeedRepository {
         videoUrl: "",
         likes: 1452,
         comments: 231,
+        verified: true,
       ),
     ];
   }

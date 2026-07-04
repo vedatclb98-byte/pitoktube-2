@@ -5,6 +5,7 @@ class VideoModel {
   final String videoUrl;
   final int likes;
   final int comments;
+  final bool verified;
 
   const VideoModel({
     required this.id,
@@ -13,5 +14,6 @@ class VideoModel {
     required this.videoUrl,
     required this.likes,
     required this.comments,
+    required this.verified,
   });
 }
