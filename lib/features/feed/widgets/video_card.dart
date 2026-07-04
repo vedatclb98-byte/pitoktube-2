@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/video_model.dart';
+import 'animated_heart.dart';
 import 'video_actions.dart';
 import 'video_info.dart';
 
-class VideoCard extends StatelessWidget {
+class VideoCard extends StatefulWidget {
   final VideoModel video;
 
   const VideoCard({
@@ -13,44 +16,75 @@ class VideoCard extends StatelessWidget {
   });
 
   @override
+  State<VideoCard> createState() => _VideoCardState();
+}
+
+class _VideoCardState extends State<VideoCard> {
+  bool _showHeart = false;
+
+  void _onDoubleTap() {
+    setState(() {
+      _showHeart = true;
+    });
+
+    Timer(const Duration(milliseconds: 700), () {
+      if (!mounted) return;
+
+      setState(() {
+        _showHeart = false;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        // Geçici video arka planı
-        Container(
-          color: Colors.grey.shade900,
-        ),
+    final video = widget.video;
 
-        // Geçici video oynatma simgesi
-        const Center(
-          child: Icon(
-            Icons.play_circle_fill,
-            size: 90,
-            color: Colors.white54,
+    return GestureDetector(
+      onDoubleTap: _onDoubleTap,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Geçici video arka planı
+          Container(
+            color: Colors.grey.shade900,
           ),
-        ),
 
-        // Sağ taraftaki aksiyon butonları
-        Positioned(
-          right: 16,
-          bottom: 110,
-          child: VideoActions(
-            likes: video.likes,
-            comments: video.comments,
+          // Geçici video simgesi
+          const Center(
+            child: Icon(
+              Icons.play_circle_fill,
+              size: 90,
+              color: Colors.white54,
+            ),
           ),
-        ),
 
-        // Sol alttaki video bilgileri
-        Positioned(
-          left: 16,
-          right: 90,
-          bottom: 30,
-          child: VideoInfo(
-            video: video,
+          // Çift dokununca görünen kalp
+          AnimatedHeart(
+            visible: _showHeart,
           ),
-        ),
-      ],
+
+          // Sağ taraftaki butonlar
+          Positioned(
+            right: 16,
+            bottom: 110,
+            child: VideoActions(
+              likes: video.likes,
+              comments: video.comments,
+            ),
+          ),
+
+          // Sol alttaki bilgiler
+          Positioned(
+            left: 16,
+            right: 90,
+            bottom: 30,
+            child: VideoInfo(
+              video: video,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
