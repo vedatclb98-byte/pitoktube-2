@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'comments_bottom_sheet.dart';
 import 'like_button.dart';
+import 'share_bottom_sheet.dart';
 
 class VideoActions extends StatelessWidget {
   final int likes;
@@ -55,7 +56,13 @@ class VideoActions extends StatelessWidget {
         const SizedBox(height: 18),
 
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (_) => const ShareBottomSheet(),
+            );
+          },
           icon: const Icon(
             Icons.share,
             size: 36,
