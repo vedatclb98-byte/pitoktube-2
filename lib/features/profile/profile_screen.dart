@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'pi_wallet_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -8,10 +9,10 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profil"),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.settings),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () {},
           ),
         ],
       ),
@@ -20,21 +21,21 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             const CircleAvatar(
-              radius: 50,
+              radius: 55,
               backgroundColor: Color(0xFF7C3AED),
               child: Icon(
                 Icons.person,
                 color: Colors.white,
-                size: 50,
+                size: 55,
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 18),
 
             const Text(
               "@pitoktube",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 26,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -42,24 +43,43 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 6),
 
             const Text(
-              "PitokTube Creator",
+              "Pi Destekli İçerik Üreticisi",
               style: TextStyle(
                 color: Colors.grey,
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 25),
 
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _ProfileStat(title: "Takipçi", value: "12.4K"),
-                _ProfileStat(title: "Takip", value: "245"),
-                _ProfileStat(title: "Beğeni", value: "84.9K"),
-              ],
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 18,
+                horizontal: 10,
+              ),
+              decoration: BoxDecoration(
+                color: const Color(0xFF15151C),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _ProfileStat(
+                    title: "Takipçi",
+                    value: "12.4K",
+                  ),
+                  _ProfileStat(
+                    title: "Takip",
+                    value: "245",
+                  ),
+                  _ProfileStat(
+                    title: "Beğeni",
+                    value: "84.9K",
+                  ),
+                ],
+              ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 24),
 
             SizedBox(
               width: double.infinity,
@@ -75,9 +95,45 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const PiWalletScreen(),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.currency_exchange),
-                label: const Text("Pi ile Bahşiş Gönder"),
+                label: const Text("Pi Wallet"),
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: const Color(0xFF7C3AED),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: const Column(
+                children: [
+                  Text(
+                    "Toplam Bahşiş",
+                    style: TextStyle(
+                      color: Colors.white70,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    "32.50 Pi",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -110,12 +166,14 @@ class ProfileScreen extends StatelessWidget {
                 return Container(
                   decoration: BoxDecoration(
                     color: const Color(0xFF7C3AED),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
-                    size: 40,
+                  child: const Center(
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 40,
+                    ),
                   ),
                 );
               },
