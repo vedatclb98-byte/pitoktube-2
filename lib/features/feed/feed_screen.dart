@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/video_card.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});
@@ -9,66 +10,15 @@ class FeedScreen extends StatelessWidget {
       body: PageView.builder(
         scrollDirection: Axis.vertical,
         itemCount: 10,
-        itemBuilder: (context, index) {
-          return Stack(
-            fit: StackFit.expand,
-            children: [
+        itemBuilder: (context,index){
 
-              Container(
-                color: Colors.grey.shade900,
-              ),
-
-              Center(
-                child: Text(
-                  "Video ${index + 1}",
-                  style: const TextStyle(
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              Positioned(
-                right: 15,
-                bottom: 120,
-                child: Column(
-                  children: const [
-
-                    Icon(
-                      Icons.favorite_border,
-                      size: 38,
-                    ),
-
-                    SizedBox(height: 25),
-
-                    Icon(
-                      Icons.chat_bubble_outline,
-                      size: 38,
-                    ),
-
-                    SizedBox(height: 25),
-
-                    Icon(
-                      Icons.share,
-                      size: 38,
-                    ),
-                  ],
-                ),
-              ),
-
-              const Positioned(
-                left: 15,
-                bottom: 30,
-                child: Text(
-                  "@PitokTube",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+          return VideoCard(
+            username: "@pitoktube",
+            description: "PitokTube MVP geliştirme devam ediyor 🚀",
+            likes: 1452,
+            comments: 231,
           );
+
         },
       ),
     );
