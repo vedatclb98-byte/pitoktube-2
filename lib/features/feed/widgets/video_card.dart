@@ -1,3 +1,4 @@
+import 'like_button.dart';
 import 'package:flutter/material.dart';
 import '../models/video_model.dart';
 
@@ -36,7 +37,7 @@ class VideoCard extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              const Icon(Icons.favorite_border, size: 36),
+              const const LikeButton(),,
               Text("${video.likes}"),
 
               const SizedBox(height: 16),
