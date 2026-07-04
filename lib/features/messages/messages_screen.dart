@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'chat_screen.dart';
 
 class MessagesScreen extends StatelessWidget {
   const MessagesScreen({super.key});
@@ -9,17 +10,17 @@ class MessagesScreen extends StatelessWidget {
       {
         "name": "PitokTube",
         "message": "PitokTube'ya hoş geldin! 🚀",
-        "time": "09:41"
+        "time": "09:41",
       },
       {
         "name": "Flutter Dev",
         "message": "Yeni video yükledim.",
-        "time": "Dün"
+        "time": "Dün",
       },
       {
         "name": "Pi Creator",
         "message": "Bahşiş için teşekkürler 💜",
-        "time": "Pzt"
+        "time": "Pzt",
       },
     ];
 
@@ -35,15 +36,29 @@ class MessagesScreen extends StatelessWidget {
           return ListTile(
             leading: const CircleAvatar(
               backgroundColor: Color(0xFF7C3AED),
-              child: Icon(Icons.person, color: Colors.white),
+              child: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
             ),
             title: Text(
               chat["name"]!,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             subtitle: Text(chat["message"]!),
             trailing: Text(chat["time"]!),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ChatScreen(
+                    username: chat["name"]!,
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
