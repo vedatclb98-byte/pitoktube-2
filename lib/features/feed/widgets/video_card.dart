@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
+import '../models/video_model.dart';
 
 class VideoCard extends StatelessWidget {
-  final String username;
-  final String description;
-  final int likes;
-  final int comments;
+  final VideoModel video;
 
   const VideoCard({
     super.key,
-    required this.username,
-    required this.description,
-    required this.likes,
-    required this.comments,
+    required this.video,
   });
 
   @override
@@ -19,13 +14,10 @@ class VideoCard extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
+        Container(color: Colors.grey.shade900),
 
-        Container(
-          color: Colors.grey.shade900,
-        ),
-
-        Center(
-          child: const Icon(
+        const Center(
+          child: Icon(
             Icons.play_circle_fill,
             size: 90,
             color: Colors.white54,
@@ -37,50 +29,46 @@ class VideoCard extends StatelessWidget {
           bottom: 120,
           child: Column(
             children: [
-
               const CircleAvatar(
                 radius: 24,
                 child: Icon(Icons.person),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 16),
 
-              const Icon(Icons.favorite_border,size:36),
+              const Icon(Icons.favorite_border, size: 36),
+              Text("${video.likes}"),
 
-              Text("$likes"),
+              const SizedBox(height: 16),
 
-              const SizedBox(height:18),
+              const Icon(Icons.chat_bubble_outline, size: 36),
+              Text("${video.comments}"),
 
-              const Icon(Icons.chat_bubble_outline,size:36),
+              const SizedBox(height: 16),
 
-              Text("$comments"),
-
-              const SizedBox(height:18),
-
-              const Icon(Icons.share,size:36),
+              const Icon(Icons.share, size: 36),
             ],
           ),
         ),
 
         Positioned(
-          left:16,
-          bottom:30,
-          right:90,
+          left: 16,
+          right: 90,
+          bottom: 30,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               Text(
-                username,
+                video.username,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize:18,
+                  fontSize: 18,
                 ),
               ),
 
-              const SizedBox(height:8),
+              const SizedBox(height: 8),
 
-              Text(description),
+              Text(video.description),
             ],
           ),
         ),

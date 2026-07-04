@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
+
+import 'services/feed_service.dart';
 import 'widgets/video_card.dart';
 
 class FeedScreen extends StatelessWidget {
-  const FeedScreen({super.key});
+  FeedScreen({super.key});
+
+  final FeedService _service = FeedService();
 
   @override
   Widget build(BuildContext context) {
+    final videos = _service.loadFeed();
+
     return Scaffold(
       body: PageView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: 10,
-        itemBuilder: (context,index){
-
-          return VideoCard(
-            username: "@pitoktube",
-            description: "PitokTube MVP geliştirme devam ediyor 🚀",
-            likes: 1452,
-            comments: 231,
-          );
-
+        itemCount: videos.length,
+        itemBuilder: (context, index) {
+          return VideoCard(video: videos[index]);
         },
       ),
     );
