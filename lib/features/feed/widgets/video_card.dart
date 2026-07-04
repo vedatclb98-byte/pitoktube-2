@@ -1,6 +1,7 @@
-import 'like_button.dart';
 import 'package:flutter/material.dart';
+
 import '../models/video_model.dart';
+import 'video_actions.dart';
 
 class VideoCard extends StatelessWidget {
   final VideoModel video;
@@ -15,8 +16,12 @@ class VideoCard extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Container(color: Colors.grey.shade900),
+        // Geçici video arka planı
+        Container(
+          color: Colors.grey.shade900,
+        ),
 
+        // Geçici video oynatma simgesi
         const Center(
           child: Icon(
             Icons.play_circle_fill,
@@ -25,33 +30,17 @@ class VideoCard extends StatelessWidget {
           ),
         ),
 
+        // Sağ taraftaki aksiyon butonları
         Positioned(
           right: 16,
-          bottom: 120,
-          child: Column(
-            children: [
-              const CircleAvatar(
-                radius: 24,
-                child: Icon(Icons.person),
-              ),
-
-              const SizedBox(height: 16),
-
-              const const LikeButton(),,
-              Text("${video.likes}"),
-
-              const SizedBox(height: 16),
-
-              const Icon(Icons.chat_bubble_outline, size: 36),
-              Text("${video.comments}"),
-
-              const SizedBox(height: 16),
-
-              const Icon(Icons.share, size: 36),
-            ],
+          bottom: 110,
+          child: VideoActions(
+            likes: video.likes,
+            comments: video.comments,
           ),
         ),
 
+        // Sol alttaki video bilgileri
         Positioned(
           left: 16,
           right: 90,
@@ -62,14 +51,16 @@ class VideoCard extends StatelessWidget {
               Text(
                 video.username,
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
                   fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 8),
-
-              Text(video.description),
+              Text(
+                video.description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ),
         ),
