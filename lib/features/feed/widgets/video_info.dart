@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/video_model.dart';
+import 'follow_button.dart';
 
 class VideoInfo extends StatelessWidget {
   final VideoModel video;
@@ -15,19 +16,29 @@ class VideoInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          video.username,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          children: [
+            Text(
+              video.username,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(width: 12),
+
+            const FollowButton(),
+          ],
         ),
 
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
 
         Text(
           video.description,
-          style: const TextStyle(fontSize: 15),
+          style: const TextStyle(
+            fontSize: 15,
+          ),
         ),
 
         const SizedBox(height: 10),
