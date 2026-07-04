@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/bottom_navigation.dart';
 
 class PitokTubeApp extends StatelessWidget {
   const PitokTubeApp({super.key});
@@ -9,17 +10,7 @@ class PitokTubeApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'PitokTube',
       theme: ThemeData.dark(),
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'PitokTube',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
+      home: const BottomNavigation(),
     );
   }
 }
