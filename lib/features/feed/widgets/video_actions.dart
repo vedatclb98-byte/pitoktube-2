@@ -22,13 +22,8 @@ class VideoActions extends StatelessWidget {
 
         const SizedBox(height: 16),
 
-        const LikeButton(),
-
-        Text(
-          "$likes",
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        LikeButton(
+          initialLikes: likes,
         ),
 
         const SizedBox(height: 18),

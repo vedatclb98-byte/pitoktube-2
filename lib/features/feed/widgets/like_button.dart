@@ -1,28 +1,63 @@
 import 'package:flutter/material.dart';
 
 class LikeButton extends StatefulWidget {
-  const LikeButton({super.key});
+  final int initialLikes;
+
+  const LikeButton({
+    super.key,
+    required this.initialLikes,
+  });
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
 }
 
 class _LikeButtonState extends State<LikeButton> {
-  bool liked = false;
+  late bool liked;
+  late int likes;
+
+  @override
+  void initState() {
+    super.initState();
+    liked = false;
+    likes = widget.initialLikes;
+  }
+
+  void toggleLike() {
+    setState(() {
+      liked = !liked;
+
+      if (liked) {
+        likes++;
+      } else {
+        likes--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      iconSize: 38,
-      onPressed: () {
-        setState(() {
-          liked = !liked;
-        });
-      },
-      icon: Icon(
-        liked ? Icons.favorite : Icons.favorite_border,
-        color: liked ? Colors.red : Colors.white,
-      ),
+    return Column(
+      children: [
+        IconButton(
+          onPressed: toggleLike,
+          icon: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            child: Icon(
+              liked ? Icons.favorite : Icons.favorite_border,
+              key: ValueKey(liked),
+              color: liked ? Colors.pink : Colors.white,
+              size: 36,
+            ),
+          ),
+        ),
+        Text(
+          "$likes",
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 }
