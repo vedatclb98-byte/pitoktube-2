@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'bookmark_button.dart';
 import 'comments_bottom_sheet.dart';
 import 'like_button.dart';
 import 'share_bottom_sheet.dart';
@@ -71,13 +72,7 @@ class VideoActions extends StatelessWidget {
 
         const SizedBox(height: 18),
 
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.bookmark_border,
-            size: 36,
-          ),
-        ),
+        const BookmarkButton(),
       ],
     );
   }
