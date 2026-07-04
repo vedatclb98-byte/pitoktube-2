@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'core/theme/app_theme.dart';
 import 'widgets/bottom_navigation.dart';
 
 class PitokTubeApp extends StatelessWidget {
@@ -7,9 +9,9 @@ class PitokTubeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'PitokTube',
-      theme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.darkTheme,
       home: const BottomNavigation(),
     );
   }
