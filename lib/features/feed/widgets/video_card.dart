@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/video_model.dart';
 import 'video_actions.dart';
+import 'video_info.dart';
 
 class VideoCard extends StatelessWidget {
   final VideoModel video;
@@ -45,23 +46,8 @@ class VideoCard extends StatelessWidget {
           left: 16,
           right: 90,
           bottom: 30,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                video.username,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                video.description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+          child: VideoInfo(
+            video: video,
           ),
         ),
       ],
