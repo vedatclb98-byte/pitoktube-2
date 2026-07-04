@@ -26,6 +26,16 @@ class VideoInfo extends StatelessWidget {
               ),
             ),
 
+            if (video.verified)
+              const Padding(
+                padding: EdgeInsets.only(left: 6),
+                child: Icon(
+                  Icons.verified,
+                  color: Color(0xFF2196F3),
+                  size: 20,
+                ),
+              ),
+
             const SizedBox(width: 12),
 
             const FollowButton(),
