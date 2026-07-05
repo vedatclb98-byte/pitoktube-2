@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../settings/settings_screen.dart';
 import 'pi_wallet_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -12,7 +14,14 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const SettingsScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -32,12 +41,33 @@ class ProfileScreen extends StatelessWidget {
 
             const SizedBox(height: 18),
 
-            const Text(
-              "@pitoktube",
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "@pitoktube",
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                SizedBox(width: 6),
+
+                Icon(
+                  Icons.verified,
+                  color: Colors.blue,
+                  size: 22,
+                ),
+
+                SizedBox(width: 6),
+
+                Icon(
+                  Icons.workspace_premium,
+                  color: Color(0xFF7C3AED),
+                  size: 22,
+                ),
+              ],
             ),
 
             const SizedBox(height: 6),
@@ -125,12 +155,24 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.white70,
                     ),
                   ),
+
                   SizedBox(height: 8),
+
                   Text(
                     "32.50 Pi",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  SizedBox(height: 12),
+
+                  Text(
+                    "Pi Creator Level 1",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 15,
                     ),
                   ),
                 ],
@@ -208,8 +250,8 @@ class _ProfileStat extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.grey,
+          style: TextStyle(
+            color: Colors.grey.shade400,
           ),
         ),
       ],
