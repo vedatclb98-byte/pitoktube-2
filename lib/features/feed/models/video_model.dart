@@ -1,8 +1,10 @@
+import 'video_source.dart';
+
 class VideoModel {
   final String id;
   final String username;
   final String description;
-  final String videoUrl;
+  final VideoSource source;
   final int likes;
   final int comments;
   final int views;
@@ -12,7 +14,7 @@ class VideoModel {
     required this.id,
     required this.username,
     required this.description,
-    required this.videoUrl,
+    required this.source,
     required this.likes,
     required this.comments,
     required this.views,
