@@ -5,103 +5,86 @@ class ExploreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hashtags = [
+    final trending = [
       "#PiNetwork",
-      "#Crypto",
+      "#PitokTube",
       "#Flutter",
-      "#Gaming",
-      "#AI",
-      "#Music",
-      "#Technology",
-      "#Travel",
+      "#Crypto",
+      "#Web3",
+      "#Creator",
+      "#Live",
+      "#Mining",
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Keşfet"),
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Video, kullanıcı veya hashtag ara...",
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              hintText: "Video, kullanıcı veya etiket ara...",
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
               ),
             ),
+          ),
 
-            const SizedBox(height: 20),
+          const SizedBox(height: 24),
 
-            SizedBox(
-              height: 45,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: hashtags.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 10),
-                itemBuilder: (context, index) {
-                  return Chip(
-                    label: Text(hashtags[index]),
-                    backgroundColor: const Color(0xFF7C3AED),
-                  );
-                },
+          const Text(
+            "Trend Etiketler",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: trending
+                .map(
+                  (tag) => Chip(
+                    label: Text(tag),
+                  ),
+                )
+                .toList(),
+          ),
+
+          const SizedBox(height: 30),
+
+          const Text(
+            "Öne Çıkan Creator'lar",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          ...List.generate(
+            5,
+            (index) => ListTile(
+              leading: const CircleAvatar(
+                backgroundColor: Color(0xFF7C3AED),
+                child: Icon(Icons.person),
+              ),
+              title: Text("@creator$index"),
+              subtitle: const Text("Pi Creator"),
+              trailing: ElevatedButton(
+                onPressed: () {},
+                child: const Text("Takip Et"),
               ),
             ),
-
-            const SizedBox(height: 20),
-
-            Expanded(
-              child: GridView.builder(
-                itemCount: 24,
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: .75,
-                ),
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF15151C),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Stack(
-                      children: [
-                        const Center(
-                          child: Icon(
-                            Icons.play_circle_fill,
-                            size: 60,
-                            color: Color(0xFF7C3AED),
-                          ),
-                        ),
-
-                        Positioned(
-                          bottom: 12,
-                          left: 12,
-                          child: Row(
-                            children: const [
-                              Icon(
-                                Icons.favorite,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                              SizedBox(width: 4),
-                              Text("12.5K"),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
