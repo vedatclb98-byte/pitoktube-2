@@ -1,3 +1,4 @@
+import 'edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../feed/models/video_model.dart';
@@ -49,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Kapak fotoğrafı + profil resmi
+            // Kapak Fotoğrafı
             Stack(
               clipBehavior: Clip.none,
               alignment: Alignment.bottomCenter,
@@ -67,7 +68,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     borderRadius: BorderRadius.circular(18),
                   ),
                 ),
-
                 const Positioned(
                   bottom: -45,
                   child: CircleAvatar(
@@ -78,8 +78,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       backgroundColor: Color(0xFF7C3AED),
                       child: Icon(
                         Icons.person,
-                        color: Colors.white,
                         size: 55,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 60),
 
-            // Kullanıcı adı
+            // Kullanıcı Adı
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -126,7 +126,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 12),
 
-            // Biyografi
             const Text(
               "🚀 Pi Network Creator\n🎬 Flutter Developer\n💜 Web3 Enthusiast",
               textAlign: TextAlign.center,
@@ -136,9 +135,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
+            const SizedBox(height: 10),
+
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.circle,
+                  size: 10,
+                  color: Colors.green,
+                ),
+                SizedBox(width: 6),
+                Text(
+                  "Çevrimiçi",
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+
             const SizedBox(height: 25),
 
-            // İstatistikler
             Container(
               padding: const EdgeInsets.symmetric(
                 vertical: 18,
@@ -168,12 +186,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             const SizedBox(height: 24),
-
-            // Profili düzenle
+                        // Profili Düzenle
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const EditProfileScreen(),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.edit),
                 label: const Text("Profili Düzenle"),
               ),
@@ -200,11 +224,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 12),
 
-            // Profili paylaş
+            // Profili Paylaş
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        "Profil paylaşma özelliği yakında eklenecek 🚀",
+                      ),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.share),
                 label: const Text("Profili Paylaş"),
               ),
@@ -212,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 30),
 
-            // Bahşiş kartı
+            // Creator Kartı
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(18),
@@ -220,25 +252,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: const Color(0xFF7C3AED),
                 borderRadius: BorderRadius.circular(18),
               ),
-              child: const Column(
+              child: Column(
                 children: [
-                  Text(
+                  const Text(
                     "Toplam Bahşiş",
                     style: TextStyle(
                       color: Colors.white70,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+
+                  const SizedBox(height: 8),
+
+                  const Text(
                     "32.50 Pi",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 12),
-                  Text(
+
+                  const SizedBox(height: 12),
+
+                  const Text(
                     "Pi Creator Level 1",
+                    style: TextStyle(
+                      color: Colors.white70,
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: const LinearProgressIndicator(
+                      value: 0.32,
+                      minHeight: 8,
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  const Text(
+                    "320 / 1000 XP",
                     style: TextStyle(
                       color: Colors.white70,
                     ),
@@ -249,7 +304,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 24),
 
-            // Başarı rozetleri
+            // Başarı Rozetleri
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -268,7 +323,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               runSpacing: 10,
               children: const [
                 Chip(
-                  avatar: Icon(Icons.verified, color: Colors.blue),
+                  avatar: Icon(
+                    Icons.verified,
+                    color: Colors.blue,
+                  ),
                   label: Text("Doğrulandı"),
                 ),
                 Chip(
@@ -279,7 +337,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   label: Text("Pi Creator"),
                 ),
                 Chip(
-                  avatar: Icon(Icons.star, color: Colors.amber),
+                  avatar: Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
                   label: Text("Top Creator"),
                 ),
               ],
@@ -287,7 +348,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 30),
 
-            // İçerikler başlığı
+            // İçerikler
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -313,8 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             const SizedBox(height: 20),
-
-            // Video grid
+                        // Video Grid
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -331,8 +391,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) =>
-                            VideoDetailScreen(video: demoVideo),
+                        builder: (_) => VideoDetailScreen(
+                          video: demoVideo,
+                        ),
                       ),
                     );
                   },
@@ -357,8 +418,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: const [
                               Icon(
                                 Icons.visibility,
-                                size: 14,
                                 color: Colors.white,
+                                size: 14,
                               ),
                               SizedBox(width: 4),
                               Text(
@@ -444,7 +505,7 @@ class _ProfileStat extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.grey.shade400,
           ),
         ),
       ],
