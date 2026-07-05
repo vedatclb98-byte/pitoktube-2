@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
 
+import '../feed/models/video_model.dart';
+import '../feed/video_detail_screen.dart';
 import '../settings/settings_screen.dart';
 import 'pi_wallet_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  int selectedTab = 0;
+
+  final VideoModel demoVideo = const VideoModel(
+    id: "1",
+    username: "@pitoktube",
+    description: "PitokTube'a hoş geldiniz 🚀",
+    videoUrl: "",
+    likes: 1452,
+    comments: 231,
+    views: 1250000,
+    verified: true,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +54,8 @@ class ProfileScreen extends StatelessWidget {
               backgroundColor: Color(0xFF7C3AED),
               child: Icon(
                 Icons.person,
-                color: Colors.white,
                 size: 55,
+                color: Colors.white,
               ),
             ),
 
@@ -51,17 +71,13 @@ class ProfileScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 SizedBox(width: 6),
-
                 Icon(
                   Icons.verified,
                   color: Colors.blue,
                   size: 22,
                 ),
-
                 SizedBox(width: 6),
-
                 Icon(
                   Icons.workspace_premium,
                   color: Color(0xFF7C3AED),
@@ -74,9 +90,7 @@ class ProfileScreen extends StatelessWidget {
 
             const Text(
               "Pi Destekli İçerik Üreticisi",
-              style: TextStyle(
-                color: Colors.grey,
-              ),
+              style: TextStyle(color: Colors.grey),
             ),
 
             const SizedBox(height: 25),
@@ -155,9 +169,7 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.white70,
                     ),
                   ),
-
                   SizedBox(height: 8),
-
                   Text(
                     "32.50 Pi",
                     style: TextStyle(
@@ -165,14 +177,11 @@ class ProfileScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
                   SizedBox(height: 12),
-
                   Text(
                     "Pi Creator Level 1",
                     style: TextStyle(
                       color: Colors.white70,
-                      fontSize: 15,
                     ),
                   ),
                 ],
@@ -184,7 +193,7 @@ class ProfileScreen extends StatelessWidget {
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Videolar",
+                "İçerikler",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -193,6 +202,18 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 16),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildTab("Videolar", 0),
+                _buildTab("Canlı", 1),
+                _buildTab("Beğenilen", 2),
+                _buildTab("Kaydedilen", 3),
+              ],
+            ),
+
+            const SizedBox(height: 20),
 
             GridView.builder(
               shrinkWrap: true,
@@ -205,16 +226,52 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisSpacing: 8,
               ),
               itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF7C3AED),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                      size: 40,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            VideoDetailScreen(video: demoVideo),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF7C3AED),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Stack(
+                      children: [
+                        const Center(
+                          child: Icon(
+                            Icons.play_arrow,
+                            size: 40,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 6,
+                          left: 6,
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.visibility,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                "12K",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );
@@ -222,6 +279,42 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTab(String title, int index) {
+    final selected = selectedTab == index;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedTab = index;
+        });
+      },
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: selected ? Colors.white : Colors.grey,
+              fontWeight:
+                  selected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          const SizedBox(height: 6),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: 40,
+            height: 3,
+            decoration: BoxDecoration(
+              color: selected
+                  ? const Color(0xFF7C3AED)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ],
       ),
     );
   }
