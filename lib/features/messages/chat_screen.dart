@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   final String username;
 
   const ChatScreen({
@@ -9,68 +9,169 @@ class ChatScreen extends StatelessWidget {
   });
 
   @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  final TextEditingController messageController =
+      TextEditingController();
+
+  final List<Map<String, dynamic>> messages = [
+    {
+      "text": "Merhaba 👋",
+      "me": false,
+    },
+    {
+      "text": "Selam 🚀",
+      "me": true,
+    },
+    {
+      "text": "Yeni videonu izledim.",
+      "me": false,
+    },
+    {
+      "text": "Teşekkür ederim ❤️",
+      "me": true,
+    },
+  ];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(username),
+        title: Row(
+          children: [
+            const CircleAvatar(
+              backgroundColor: Color(0xFF7C3AED),
+              child: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+            ),
+
+            const SizedBox(width: 12),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(widget.username),
+
+                  const Text(
+                    "Çevrimiçi",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.call),
+            ),
+
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.videocam),
+            ),
+          ],
+        ),
       ),
+
       body: Column(
         children: [
           Expanded(
-            child: ListView(
+            child: ListView.builder(
               padding: const EdgeInsets.all(16),
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: _messageBubble(
-                    "Merhaba 👋",
-                    false,
-                  ),
-                ),
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final message = messages[index];
 
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: _messageBubble(
-                    "Merhaba, nasılsın?",
-                    true,
+                return Align(
+                  alignment: message["me"]
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Container(
+                    margin:
+                        const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: message["me"]
+                          ? const Color(0xFF7C3AED)
+                          : const Color(0xFF1E1E1E),
+                      borderRadius:
+                          BorderRadius.circular(18),
+                    ),
+                    child: Text(
+                      message["text"],
+                    ),
                   ),
-                ),
-
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: _messageBubble(
-                    "PitokTube çok güzel olmuş 🚀",
-                    false,
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
 
-          const Divider(height: 1),
-
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              color: Color(0xFF15151C),
+            ),
+            child: SafeArea(
               child: Row(
                 children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.emoji_emotions_outlined,
+                    ),
+                  ),
+
                   Expanded(
                     child: TextField(
+                      controller: messageController,
                       decoration: InputDecoration(
                         hintText: "Mesaj yaz...",
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius:
+                              BorderRadius.circular(30),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
                         ),
                       ),
                     ),
                   ),
 
-                  const SizedBox(width: 10),
-
-                  FloatingActionButton(
-                    mini: true,
+                  IconButton(
                     onPressed: () {},
-                    child: const Icon(Icons.send),
+                    icon: const Icon(Icons.attach_file),
+                  ),
+
+                  IconButton(
+                    onPressed: () {
+                      if (messageController.text.isEmpty) {
+                        return;
+                      }
+
+                      setState(() {
+                        messages.add({
+                          "text": messageController.text,
+                          "me": true,
+                        });
+                      });
+
+                      messageController.clear();
+                    },
+                    icon: const Icon(
+                      Icons.send,
+                      color: Color(0xFF7C3AED),
+                    ),
                   ),
                 ],
               ),
@@ -81,20 +182,9 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  Widget _messageBubble(String text, bool mine) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: mine
-            ? const Color(0xFF7C3AED)
-            : Colors.grey.shade800,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(color: Colors.white),
-      ),
-    );
+  @override
+  void dispose() {
+    messageController.dispose();
+    super.dispose();
   }
 }
