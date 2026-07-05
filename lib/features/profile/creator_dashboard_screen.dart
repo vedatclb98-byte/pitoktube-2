@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'analytics_screen.dart';
 
 class CreatorDashboardScreen extends StatelessWidget {
   const CreatorDashboardScreen({super.key});
@@ -96,6 +97,24 @@ class CreatorDashboardScreen extends StatelessWidget {
             "Kazanılan Pi",
             "+2.35 Pi",
             Icons.currency_exchange,
+          ),
+
+          const SizedBox(height: 30),
+
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AnalyticsScreen(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.analytics),
+              label: const Text("Detaylı Analytics"),
+            ),
           ),
         ],
       ),
