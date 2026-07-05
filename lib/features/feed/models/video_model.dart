@@ -5,6 +5,7 @@ class VideoModel {
   final String videoUrl;
   final int likes;
   final int comments;
+  final int views;
   final bool verified;
 
   const VideoModel({
@@ -14,6 +15,7 @@ class VideoModel {
     required this.videoUrl,
     required this.likes,
     required this.comments,
+    required this.views,
     required this.verified,
   });
 }

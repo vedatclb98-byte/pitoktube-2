@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/number_formatter.dart';
 import '../models/video_model.dart';
 import 'follow_button.dart';
 
@@ -48,6 +49,16 @@ class VideoInfo extends StatelessWidget {
           video.description,
           style: const TextStyle(
             fontSize: 15,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        Text(
+          "${NumberFormatter.format(video.views)} görüntülenme",
+          style: const TextStyle(
+            color: Colors.white70,
+            fontSize: 13,
           ),
         ),
 
