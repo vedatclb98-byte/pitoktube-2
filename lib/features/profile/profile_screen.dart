@@ -49,18 +49,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            const CircleAvatar(
-              radius: 55,
-              backgroundColor: Color(0xFF7C3AED),
-              child: Icon(
-                Icons.person,
-                size: 55,
-                color: Colors.white,
-              ),
+            // Kapak fotoğrafı + profil resmi
+            Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  height: 170,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF7C3AED),
+                        Color(0xFF4C1D95),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+
+                const Positioned(
+                  bottom: -45,
+                  child: CircleAvatar(
+                    radius: 55,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 52,
+                      backgroundColor: Color(0xFF7C3AED),
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 55,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
 
-            const SizedBox(height: 18),
+            const SizedBox(height: 60),
 
+            // Kullanıcı adı
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -90,11 +119,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const Text(
               "Pi Destekli İçerik Üreticisi",
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            // Biyografi
+            const Text(
+              "🚀 Pi Network Creator\n🎬 Flutter Developer\n💜 Web3 Enthusiast",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.white70,
+              ),
             ),
 
             const SizedBox(height: 25),
 
+            // İstatistikler
             Container(
               padding: const EdgeInsets.symmetric(
                 vertical: 18,
@@ -125,6 +169,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 24),
 
+            // Profili düzenle
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -136,6 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 12),
 
+            // Pi Wallet
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -152,8 +198,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
+            const SizedBox(height: 12),
+
+            // Profili paylaş
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.share),
+                label: const Text("Profili Paylaş"),
+              ),
+            ),
+
             const SizedBox(height: 30),
 
+            // Bahşiş kartı
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(18),
@@ -188,8 +247,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
+            const SizedBox(height: 24),
+
+            // Başarı rozetleri
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Başarı Rozetleri",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: const [
+                Chip(
+                  avatar: Icon(Icons.verified, color: Colors.blue),
+                  label: Text("Doğrulandı"),
+                ),
+                Chip(
+                  avatar: Icon(
+                    Icons.workspace_premium,
+                    color: Color(0xFF7C3AED),
+                  ),
+                  label: Text("Pi Creator"),
+                ),
+                Chip(
+                  avatar: Icon(Icons.star, color: Colors.amber),
+                  label: Text("Top Creator"),
+                ),
+              ],
+            ),
+
             const SizedBox(height: 30),
 
+            // İçerikler başlığı
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -203,6 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 16),
 
+            // Sekmeler
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -215,6 +314,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 20),
 
+            // Video grid
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -344,7 +444,7 @@ class _ProfileStat extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: Colors.grey.shade400,
+            color: Colors.grey,
           ),
         ),
       ],
