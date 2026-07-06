@@ -1,28 +1,17 @@
 import '../models/comment_model.dart';
 
 class CommentRepository {
-  Future<List<CommentModel>> getComments(String videoId) async {
-    await Future.delayed(const Duration(milliseconds: 500));
+  final List<CommentModel> _comments = [];
 
-    return [
-      CommentModel(
-        id: "1",
-        videoId: videoId,
-        userId: "101",
-        username: "@piuser",
-        text: "Harika video 👏",
-        createdAt: DateTime.now(),
-        likes: 12,
-      ),
-      CommentModel(
-        id: "2",
-        videoId: videoId,
-        userId: "102",
-        username: "@flutterdev",
-        text: "Devamını bekliyoruz 🚀",
-        createdAt: DateTime.now(),
-        likes: 8,
-      ),
-    ];
+  Future<List<CommentModel>> getComments(String videoId) async {
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    return _comments.where((c) => c.videoId == videoId).toList();
+  }
+
+  Future<void> addComment(CommentModel comment) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    _comments.add(comment);
   }
 }
