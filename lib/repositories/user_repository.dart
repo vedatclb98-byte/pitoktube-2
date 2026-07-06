@@ -1,23 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
-import '../models/user_role.dart';
 
 class UserRepository {
-  Future<UserModel> getCurrentUser() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-    return const UserModel(
-      id: "1",
-      username: "@pitoktube",
-      displayName: "PitokTube",
-      photoUrl: null,
-      bio: "Pi Network Creator Platform",
-      verified: true,
-      kycVerified: true,
-      followers: 12400,
-      following: 245,
-      likes: 84900,
-      piBalance: 32.50,
-      role: UserRole.admin,
-    );
+  Future<void> createUser(UserModel user) async {
+    await _firestore.collection("users").doc(user.id).set(user.toMap());
+  }
+
+  Future<UserModel?> getUser(String id) async {
+    final doc = await _firestore.collection("users").doc(id).get();
+
+    if (!doc.exists) return null;
+
+    return UserModel.fromMap(doc.data()!);
   }
 }

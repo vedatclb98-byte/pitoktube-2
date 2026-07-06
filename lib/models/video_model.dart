@@ -2,6 +2,7 @@ class VideoModel {
   final String id;
   final String userId;
   final String username;
+  final String userPhotoUrl; // 👈 YENİ EKLENDİ
   final String videoUrl;
   final String description;
   final int likes;
@@ -12,6 +13,7 @@ class VideoModel {
     required this.id,
     required this.userId,
     required this.username,
+    required this.userPhotoUrl,
     required this.videoUrl,
     required this.description,
     required this.likes,
@@ -24,6 +26,7 @@ class VideoModel {
       "id": id,
       "userId": userId,
       "username": username,
+      "userPhotoUrl": userPhotoUrl, // 👈 YENİ
       "videoUrl": videoUrl,
       "description": description,
       "likes": likes,
@@ -37,6 +40,7 @@ class VideoModel {
       id: map["id"],
       userId: map["userId"],
       username: map["username"],
+      userPhotoUrl: map["userPhotoUrl"] ?? "", // 👈 YENİ
       videoUrl: map["videoUrl"],
       description: map["description"],
       likes: map["likes"],
