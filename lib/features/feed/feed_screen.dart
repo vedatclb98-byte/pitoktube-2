@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'services/feed_service.dart';
-import 'widgets/video_card.dart';
-import 'widgets/video_player_widget.dart';
+import '../../widgets/video_card.dart';
+import '../../providers/video_provider.dart';
 
-class FeedScreen extends StatelessWidget {
-  FeedScreen({super.key});
-
-  final FeedService _service = FeedService();
+class FeedScreen extends ConsumerWidget {
+  const FeedScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final videos = _service.loadFeed();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final videosAsync = ref.watch(feedProvider);
 
     return Scaffold(
-      body: PageView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: videos.length,
-        itemBuilder: (context, index) {
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              VideoPlayerWidget(
-                videoUrl: videos[index].videoUrl,
-              ),
-              VideoCard(
-                video: videos[index],
-              ),
-            ],
+      body: videosAsync.when(
+        data: (videos) {
+          return PageView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: videos.length,
+            itemBuilder: (context, index) {
+              return VideoCard(video: videos[index]);
+            },
           );
         },
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (error, _) => Center(
+          child: Text("Hata: $error"),
+        ),
       ),
     );
   }
