@@ -10,9 +10,11 @@ class VideoModel {
   final int likes;
   final int comments;
 
-  // 📊 ALGORİTMA VERİLERİ
   final int views;
   final int watchTime;
+
+  // 🔥 TRENDING SCORE
+  final int trendingScore;
 
   final DateTime createdAt;
 
@@ -27,6 +29,7 @@ class VideoModel {
     required this.comments,
     required this.views,
     required this.watchTime,
+    required this.trendingScore,
     required this.createdAt,
   });
 
@@ -42,6 +45,7 @@ class VideoModel {
       "comments": comments,
       "views": views,
       "watchTime": watchTime,
+      "trendingScore": trendingScore,
       "createdAt": createdAt.toIso8601String(),
     };
   }
@@ -58,6 +62,7 @@ class VideoModel {
       comments: map["comments"],
       views: map["views"] ?? 0,
       watchTime: map["watchTime"] ?? 0,
+      trendingScore: map["trendingScore"] ?? 0,
       createdAt: DateTime.parse(map["createdAt"]),
     );
   }
