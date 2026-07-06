@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../models/video_model.dart';
@@ -21,11 +20,9 @@ class VideoCard extends StatefulWidget {
 
 class _VideoCardState extends State<VideoCard> {
   bool _showHeart = false;
-  bool _liked = false;
 
   void _onDoubleTap() {
     setState(() {
-      _liked = true;
       _showHeart = true;
     });
 
@@ -72,7 +69,8 @@ class _VideoCardState extends State<VideoCard> {
             right: 16,
             bottom: 110,
             child: VideoActions(
-              likes: video.likes + (_liked ? 1 : 0),
+              videoId: video.id,
+              likes: video.likes,
               comments: video.comments,
             ),
           ),

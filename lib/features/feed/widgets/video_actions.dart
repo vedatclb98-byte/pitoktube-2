@@ -1,75 +1,44 @@
-import 'package:flutter/material.dart';
-
-import 'bookmark_button.dart';
-import 'comments_bottom_sheet.dart';
-import 'like_button.dart';
-import 'share_bottom_sheet.dart';
-
-class VideoActions extends StatelessWidget {
+class VideoActions extends ConsumerWidget {
+  final String videoId;
   final int likes;
   final int comments;
 
   const VideoActions({
     super.key,
+    required this.videoId,
     required this.likes,
     required this.comments,
   });
 
-  String _formatCount(int value) {
-    if (value >= 1000000) {
-      return "${(value / 1000000).toStringAsFixed(1)}M";
-    }
-    if (value >= 1000) {
-      return "${(value / 1000).toStringAsFixed(1)}K";
-    }
-    return value.toString();
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final liked = ref.watch(likedVideosProvider).contains(videoId);
+
     return Column(
       children: [
         const CircleAvatar(
-          radius: 28,
-          backgroundColor: Color(0xFF7C3AED),
-          child: Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
+          radius: 26,
+          child: Icon(Icons.person),
         ),
 
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
 
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 3,
+        IconButton(
+          onPressed: () {
+            ref
+                .read(likedVideosProvider.notifier)
+                .toggleLike(videoId, likes);
+          },
+          icon: Icon(
+            liked ? Icons.favorite : Icons.favorite_border,
+            size: 36,
+            color: liked ? Colors.red : Colors.white,
           ),
-          decoration: BoxDecoration(
-            color: Colors.red,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Text(
-            "Takip Et",
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 18),
-
-        LikeButton(
-          initialLikes: likes,
         ),
 
         Text(
-          _formatCount(likes),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          liked ? "${likes + 1}" : "$likes",
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 18),
@@ -90,10 +59,8 @@ class VideoActions extends StatelessWidget {
         ),
 
         Text(
-          _formatCount(comments),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          "$comments",
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
 
         const SizedBox(height: 18),
@@ -115,30 +82,6 @@ class VideoActions extends StatelessWidget {
         const SizedBox(height: 18),
 
         const BookmarkButton(),
-
-        const SizedBox(height: 18),
-
-        IconButton(
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("🪙 Pi Tip özelliği yakında geliyor"),
-              ),
-            );
-          },
-          icon: const Icon(
-            Icons.currency_exchange,
-            color: Color(0xFF7C3AED),
-            size: 36,
-          ),
-        ),
-
-        const Text(
-          "Tip",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ],
     );
   }
