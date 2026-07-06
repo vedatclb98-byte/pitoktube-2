@@ -1,34 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/notification_model.dart';
 
 class NotificationRepository {
-  Future<List<NotificationModel>> getNotifications() async {
-    await Future.delayed(const Duration(milliseconds: 400));
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-    return [
-      NotificationModel(
-        id: "1",
-        title: "Yeni Takipçi",
-        message: "@piuser seni takip etmeye başladı.",
-        type: NotificationType.follow,
-        createdAt: DateTime.now(),
-        isRead: false,
-      ),
-      NotificationModel(
-        id: "2",
-        title: "Yeni Beğeni",
-        message: "Videon 120 yeni beğeni aldı.",
-        type: NotificationType.like,
-        createdAt: DateTime.now(),
-        isRead: false,
-      ),
-      NotificationModel(
-        id: "3",
-        title: "Pi Tip",
-        message: "2.5 Pi bahşiş aldın.",
-        type: NotificationType.tip,
-        createdAt: DateTime.now(),
-        isRead: true,
-      ),
-    ];
+  Future<void> sendNotification(NotificationModel notification) async {
+    await _firestore
+        .collection("notifications")
+        .add(notification.toMap());
+  }
+
+  Stream<List<NotificationModel>> getNotifications(String userId) {
+    return _firestore
+        .collection("notifications")
+        .where("userId", isEqualTo: userId)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => NotificationModel.fromMap(doc.data()))
+          .toList();
+    });
   }
 }

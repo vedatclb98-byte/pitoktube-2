@@ -1,38 +1,39 @@
-enum NotificationType {
-  like,
-  comment,
-  follow,
-  tip,
-  system,
-}
-
 class NotificationModel {
   final String id;
-  final String title;
+  final String userId; // bildirimi alan
+  final String fromUserId; // aksiyonu yapan
+  final String type; // like, follow, comment
   final String message;
-  final NotificationType type;
   final DateTime createdAt;
-  final bool isRead;
 
-  const NotificationModel({
+  NotificationModel({
     required this.id,
-    required this.title,
-    required this.message,
+    required this.userId,
+    required this.fromUserId,
     required this.type,
+    required this.message,
     required this.createdAt,
-    required this.isRead,
   });
 
-  NotificationModel copyWith({
-    bool? isRead,
-  }) {
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "userId": userId,
+      "fromUserId": fromUserId,
+      "type": type,
+      "message": message,
+      "createdAt": createdAt.toIso8601String(),
+    };
+  }
+
+  factory NotificationModel.fromMap(Map<String, dynamic> map) {
     return NotificationModel(
-      id: id,
-      title: title,
-      message: message,
-      type: type,
-      createdAt: createdAt,
-      isRead: isRead ?? this.isRead,
+      id: map["id"],
+      userId: map["userId"],
+      fromUserId: map["fromUserId"],
+      type: map["type"],
+      message: map["message"],
+      createdAt: DateTime.parse(map["createdAt"]),
     );
   }
 }
