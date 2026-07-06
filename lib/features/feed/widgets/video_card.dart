@@ -6,6 +6,7 @@ import 'animated_heart.dart';
 import 'video_actions.dart';
 import 'video_info.dart';
 import 'cloud_video_player.dart';
+import '../../video/video_engagement_service.dart';
 import '../video_detail_screen.dart';
 
 class VideoCard extends StatefulWidget {
@@ -23,6 +24,9 @@ class VideoCard extends StatefulWidget {
 class _VideoCardState extends State<VideoCard> {
   bool _showHeart = false;
 
+  final VideoEngagementService _engagement =
+      VideoEngagementService();
+
   void _onDoubleTap() {
     setState(() {
       _showHeart = true;
@@ -30,14 +34,19 @@ class _VideoCardState extends State<VideoCard> {
 
     Timer(const Duration(milliseconds: 700), () {
       if (!mounted) return;
-
-      setState(() {
-        _showHeart = false;
-      });
+      setState(() => _showHeart = false);
     });
   }
 
-  void _openVideoDetail() {
+  void _startWatch() {
+    _engagement.addView(widget.video.id);
+  }
+
+  void _stopWatch() {
+    // burada istersen watchTime eklenir (sonraki adımda bağladık)
+  }
+
+  void _openDetail() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -51,20 +60,22 @@ class _VideoCardState extends State<VideoCard> {
     final video = widget.video;
 
     return GestureDetector(
-      onTap: _openVideoDetail,
+      onTap: _openDetail,
       onDoubleTap: _onDoubleTap,
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // 🎬 GERÇEK VİDEO OYNATICI
-          CloudVideoPlayer(videoUrl: video.videoUrl),
-
-          // Kalp animasyonu
-          AnimatedHeart(
-            visible: _showHeart,
+          // 🎥 VIDEO PLAYER
+          CloudVideoPlayer(
+            videoUrl: video.videoUrl,
+            onPlay: _startWatch,
+            onStop: _stopWatch,
           ),
 
-          // Sağ butonlar
+          // ❤️ HEART
+          AnimatedHeart(visible: _showHeart),
+
+          // 📊 ACTIONS
           Positioned(
             right: 16,
             bottom: 110,
@@ -75,7 +86,7 @@ class _VideoCardState extends State<VideoCard> {
             ),
           ),
 
-          // Sol alt bilgi
+          // ℹ️ INFO
           Positioned(
             left: 16,
             right: 90,

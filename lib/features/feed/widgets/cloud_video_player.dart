@@ -4,9 +4,15 @@ import 'package:video_player/video_player.dart';
 class CloudVideoPlayer extends StatefulWidget {
   final String videoUrl;
 
+  // 👇 WATCH TIME HOOK
+  final VoidCallback? onPlay;
+  final VoidCallback? onStop;
+
   const CloudVideoPlayer({
     super.key,
     required this.videoUrl,
+    this.onPlay,
+    this.onStop,
   });
 
   @override
@@ -27,11 +33,17 @@ class _CloudVideoPlayerState extends State<CloudVideoPlayer> {
         setState(() {});
         _controller.play();
         _controller.setLooping(true);
+
+        // 🎬 video başladı
+        widget.onPlay?.call();
       });
   }
 
   @override
   void dispose() {
+    // ⛔ video durdu
+    widget.onStop?.call();
+
     _controller.dispose();
     super.dispose();
   }
@@ -39,9 +51,7 @@ class _CloudVideoPlayerState extends State<CloudVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     if (!_controller.value.isInitialized) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     return GestureDetector(
