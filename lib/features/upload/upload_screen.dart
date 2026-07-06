@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../models/video_model.dart';
+import '../../repositories/video_repository.dart';
+import '../../services/video_upload_service.dart';
 
 class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key});
@@ -9,149 +15,68 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
-  final TextEditingController titleController =
-      TextEditingController();
+  File? _video;
+  final picker = ImagePicker();
 
-  final TextEditingController descriptionController =
-      TextEditingController();
+  final VideoUploadService _uploadService = VideoUploadService();
+  final VideoRepository _repo = VideoRepository();
 
-  bool isUploading = false;
+  Future<void> pickVideo() async {
+    final picked = await picker.pickVideo(source: ImageSource.gallery);
+
+    if (picked != null) {
+      setState(() {
+        _video = File(picked.path);
+      });
+    }
+  }
+
+  Future<void> upload() async {
+    if (_video == null) return;
+
+    final url = await _uploadService.uploadVideo(_video!);
+
+    final video = VideoModel(
+      id: DateTime.now().toString(),
+      userId: "user123",
+      username: "@user",
+      videoUrl: url,
+      description: "Yeni video",
+      likes: 0,
+      comments: 0,
+      createdAt: DateTime.now(),
+    );
+
+    await _repo.uploadVideo(video);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Video yüklendi!")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Video Yükle"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Container(
-              height: 220,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFF15151C),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.video_library,
-                    size: 70,
-                    color: Color(0xFF7C3AED),
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    "Henüz video seçilmedi",
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
+      appBar: AppBar(title: const Text("Upload Video")),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: pickVideo,
+            child: const Text("Video Seç"),
+          ),
+          if (_video != null)
+            const Padding(
+              padding: EdgeInsets.all(10),
+              child: Text("Video seçildi"),
             ),
-
-            const SizedBox(height: 30),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  HapticFeedback.mediumImpact();
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        "📹 Gerçek video seçme özelliği yakında eklenecek.",
-                      ),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.folder),
-                label: const Text("Galeriden Video Seç"),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-                        TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: "Video Başlığı",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: descriptionController,
-              maxLines: 4,
-              decoration: InputDecoration(
-                labelText: "Açıklama",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-            ),
-
-            const Spacer(),
-
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  if (titleController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          "Video başlığı giriniz.",
-                        ),
-                      ),
-                    );
-                    return;
-                  }
-
-                  setState(() {
-                    isUploading = true;
-                  });
-
-                  await Future.delayed(
-                    const Duration(seconds: 2),
-                  );
-
-                  setState(() {
-                    isUploading = false;
-                  });
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        "🚀 Video başarıyla yüklendi (Demo)",
-                      ),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.cloud_upload),
-                label: isUploading
-                    ? const Text("Yükleniyor...")
-                    : const Text("Videoyu Yayınla"),
-              ),
-            ),
-                      ],
-        ),
+          ElevatedButton(
+            onPressed: upload,
+            child: const Text("Upload"),
+          ),
+        ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    descriptionController.dispose();
-    super.dispose();
   }
 }
