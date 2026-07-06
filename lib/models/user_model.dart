@@ -1,3 +1,5 @@
+import 'user_role.dart';
+
 class UserModel {
   final String id;
   final String username;
@@ -14,6 +16,8 @@ class UserModel {
 
   final double piBalance;
 
+  final UserRole role;
+
   const UserModel({
     required this.id,
     required this.username,
@@ -26,6 +30,7 @@ class UserModel {
     required this.following,
     required this.likes,
     required this.piBalance,
+    required this.role,
   });
 
   UserModel copyWith({
@@ -40,6 +45,7 @@ class UserModel {
     int? following,
     int? likes,
     double? piBalance,
+    UserRole? role,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -53,9 +59,11 @@ class UserModel {
       following: following ?? this.following,
       likes: likes ?? this.likes,
       piBalance: piBalance ?? this.piBalance,
+      role: role ?? this.role,
     );
   }
-    Map<String, dynamic> toMap() {
+
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'username': username,
@@ -68,6 +76,7 @@ class UserModel {
       'following': following,
       'likes': likes,
       'piBalance': piBalance,
+      'role': role.name,
     };
   }
 
@@ -84,9 +93,14 @@ class UserModel {
       following: map['following'] ?? 0,
       likes: map['likes'] ?? 0,
       piBalance: (map['piBalance'] ?? 0).toDouble(),
+      role: UserRole.values.firstWhere(
+        (e) => e.name == (map['role'] ?? 'pioneer'),
+        orElse: () => UserRole.pioneer,
+      ),
     );
   }
-    @override
+
+  @override
   String toString() {
     return 'UserModel('
         'id: $id, '
@@ -97,7 +111,8 @@ class UserModel {
         'followers: $followers, '
         'following: $following, '
         'likes: $likes, '
-        'piBalance: $piBalance'
+        'piBalance: $piBalance, '
+        'role: $role'
         ')';
   }
 }
