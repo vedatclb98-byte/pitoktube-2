@@ -1,9 +1,50 @@
-import 'package:flutter/material.dart';
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    const Text(
+      "Başarı Rozetleri",
+      style: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    TextButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const AchievementsScreen(),
+          ),
+        );
+      },
+      child: const Text("Tümünü Gör"),
+    ),
+  ],
+),
 
-import 'creator_dashboard_screen.dart';
-import 'edit_profile_screen.dart';
+const SizedBox(height: 16),
 
-import '../feed/models/video_model.dart';
-import '../feed/video_detail_screen.dart';
-import '../settings/settings_screen.dart';
-import 'pi_wallet_screen.dart';
+Wrap(
+  spacing: 10,
+  runSpacing: 10,
+  children: const [
+    Chip(
+      avatar: Icon(Icons.verified, color: Colors.blue),
+      label: Text("Doğrulandı"),
+    ),
+    Chip(
+      avatar: Icon(
+        Icons.workspace_premium,
+        color: Color(0xFF7C3AED),
+      ),
+      label: Text("Pi Creator"),
+    ),
+    Chip(
+      avatar: Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      label: Text("Top Creator"),
+    ),
+  ],
+),
