@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'services/feed_service.dart';
 import 'widgets/video_card.dart';
+import 'widgets/video_player_widget.dart';
 
 class FeedScreen extends StatelessWidget {
   FeedScreen({super.key});
@@ -17,7 +18,17 @@ class FeedScreen extends StatelessWidget {
         scrollDirection: Axis.vertical,
         itemCount: videos.length,
         itemBuilder: (context, index) {
-          return VideoCard(video: videos[index]);
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              VideoPlayerWidget(
+                videoUrl: videos[index].videoUrl,
+              ),
+              VideoCard(
+                video: videos[index],
+              ),
+            ],
+          );
         },
       ),
     );

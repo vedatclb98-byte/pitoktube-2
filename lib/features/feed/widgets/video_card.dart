@@ -21,9 +21,11 @@ class VideoCard extends StatefulWidget {
 
 class _VideoCardState extends State<VideoCard> {
   bool _showHeart = false;
+  bool _liked = false;
 
   void _onDoubleTap() {
     setState(() {
+      _liked = true;
       _showHeart = true;
     });
 
@@ -45,21 +47,22 @@ class _VideoCardState extends State<VideoCard> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Geçici video arka planı
+          // Karartma efekti
           Container(
-            color: Colors.grey.shade900,
-          ),
-
-          // Geçici video simgesi
-          const Center(
-            child: Icon(
-              Icons.play_circle_fill,
-              size: 90,
-              color: Colors.white54,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withOpacity(0.15),
+                  Colors.black.withOpacity(0.75),
+                ],
+              ),
             ),
           ),
 
-          // Çift dokununca görünen kalp
+          // Çift dokunma kalbi
           AnimatedHeart(
             visible: _showHeart,
           ),
@@ -69,19 +72,17 @@ class _VideoCardState extends State<VideoCard> {
             right: 16,
             bottom: 110,
             child: VideoActions(
-              likes: video.likes,
+              likes: video.likes + (_liked ? 1 : 0),
               comments: video.comments,
             ),
           ),
 
-          // Sol alttaki bilgiler
+          // Sol alt bilgiler
           Positioned(
             left: 16,
             right: 90,
             bottom: 30,
-            child: VideoInfo(
-              video: video,
-            ),
+            child: VideoInfo(video: video),
           ),
         ],
       ),
