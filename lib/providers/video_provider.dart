@@ -6,9 +6,9 @@ final videoRepositoryProvider = Provider<VideoRepository>((ref) {
   return VideoRepository();
 });
 
-// 🔥 TRENDING FEED PROVIDER
-final trendingFeedProvider =
-    StreamProvider<List<VideoModel>>((ref) {
+// 🧠 PERSONAL FEED PROVIDER
+final personalFeedProvider =
+    StreamProvider.family<List<VideoModel>, String>((ref, userId) {
   final repo = ref.read(videoRepositoryProvider);
-  return repo.getTrendingFeed();
+  return repo.getPersonalFeed(userId: userId);
 });

@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../widgets/video_card.dart';
 import '../../providers/video_provider.dart';
+import 'widgets/video_card.dart';
 
 class FeedScreen extends ConsumerWidget {
-  const FeedScreen({super.key});
+  final String userId;
+
+  const FeedScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final videosAsync = ref.watch(feedProvider);
+    final feed = ref.watch(personalFeedProvider(userId));
 
     return Scaffold(
-      body: videosAsync.when(
+      backgroundColor: Colors.black,
+      body: feed.when(
         data: (videos) {
           return PageView.builder(
             scrollDirection: Axis.vertical,
@@ -22,12 +28,10 @@ class FeedScreen extends ConsumerWidget {
             },
           );
         },
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
-        error: (error, _) => Center(
-          child: Text("Hata: $error"),
-        ),
+        loading: () =>
+            const Center(child: CircularProgressIndicator()),
+        error: (e, _) =>
+            Center(child: Text("Hata: $e")),
       ),
     );
   }
