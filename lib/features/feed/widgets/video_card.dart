@@ -5,6 +5,7 @@ import '../models/video_model.dart';
 import 'animated_heart.dart';
 import 'video_actions.dart';
 import 'video_info.dart';
+import 'cloud_video_player.dart';
 import '../video_detail_screen.dart';
 
 class VideoCard extends StatefulWidget {
@@ -55,27 +56,15 @@ class _VideoCardState extends State<VideoCard> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Arka plan gradient
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.2),
-                  Colors.black.withOpacity(0.8),
-                ],
-              ),
-            ),
-          ),
+          // 🎬 GERÇEK VİDEO OYNATICI
+          CloudVideoPlayer(videoUrl: video.videoUrl),
 
           // Kalp animasyonu
           AnimatedHeart(
             visible: _showHeart,
           ),
 
-          // Sağ taraf butonlar
+          // Sağ butonlar
           Positioned(
             right: 16,
             bottom: 110,
