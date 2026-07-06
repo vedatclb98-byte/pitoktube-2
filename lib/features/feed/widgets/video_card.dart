@@ -5,6 +5,7 @@ import '../models/video_model.dart';
 import 'animated_heart.dart';
 import 'video_actions.dart';
 import 'video_info.dart';
+import '../video_detail_screen.dart';
 
 class VideoCard extends StatefulWidget {
   final VideoModel video;
@@ -35,16 +36,26 @@ class _VideoCardState extends State<VideoCard> {
     });
   }
 
+  void _openVideoDetail() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => VideoDetailScreen(video: widget.video),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final video = widget.video;
 
     return GestureDetector(
+      onTap: _openVideoDetail,
       onDoubleTap: _onDoubleTap,
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Karartma efekti
+          // Arka plan gradient
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -52,19 +63,19 @@ class _VideoCardState extends State<VideoCard> {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withOpacity(0.15),
-                  Colors.black.withOpacity(0.75),
+                  Colors.black.withOpacity(0.2),
+                  Colors.black.withOpacity(0.8),
                 ],
               ),
             ),
           ),
 
-          // Çift dokunma kalbi
+          // Kalp animasyonu
           AnimatedHeart(
             visible: _showHeart,
           ),
 
-          // Sağ taraftaki butonlar
+          // Sağ taraf butonlar
           Positioned(
             right: 16,
             bottom: 110,
@@ -75,7 +86,7 @@ class _VideoCardState extends State<VideoCard> {
             ),
           ),
 
-          // Sol alt bilgiler
+          // Sol alt bilgi
           Positioned(
             left: 16,
             right: 90,
