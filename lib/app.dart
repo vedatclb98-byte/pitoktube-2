@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'core/theme/app_theme.dart';
-import 'widgets/bottom_navigation.dart';
+import 'features/splash/splash_screen.dart';
 
 class PitokTubeApp extends StatelessWidget {
   const PitokTubeApp({super.key});
@@ -12,7 +12,7 @@ class PitokTubeApp extends StatelessWidget {
       title: 'PitokTube',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      home: const BottomNavigation(),
+      home: const SplashScreen(),
     );
   }
 }
