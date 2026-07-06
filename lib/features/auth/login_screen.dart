@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/bottom_navigation.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -64,17 +66,16 @@ class LoginScreen extends StatelessWidget {
               ),
 
               const Spacer(),
-                            SizedBox(
+
+              SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Gelecekte Pi Authentication burada başlayacak.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          "Pi Authentication yakında aktif olacak.",
-                        ),
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const BottomNavigation(),
                       ),
                     );
                   },
@@ -102,7 +103,7 @@ class LoginScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 24),
-                          ],
+            ],
           ),
         ),
       ),
