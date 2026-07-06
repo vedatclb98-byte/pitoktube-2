@@ -4,17 +4,20 @@ import '../models/video_model.dart';
 class VideoRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<List<VideoModel>> getFeed() async {
-    final snapshot = await _firestore
+  // 🔥 REAL-TIME FEED
+  Stream<List<VideoModel>> getFeedStream() {
+    return _firestore
         .collection("videos")
         .orderBy("createdAt", descending: true)
-        .get();
-
-    return snapshot.docs
-        .map((doc) => VideoModel.fromMap(doc.data()))
-        .toList();
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return VideoModel.fromMap(doc.data());
+      }).toList();
+    });
   }
 
+  // Upload
   Future<void> uploadVideo(VideoModel video) async {
     await _firestore.collection("videos").add(video.toMap());
   }
