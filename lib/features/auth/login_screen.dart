@@ -1,110 +1,119 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../widgets/bottom_navigation.dart';
+import '../../providers/auth_provider.dart';
+import '../../repositories/auth_repository.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  bool isLoading = false;
+
+  Future<void> login() async {
+    setState(() => isLoading = true);
+
+    try {
+      final authRepo = ref.read(authRepositoryProvider);
+
+      await authRepo.signInWithEmail(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+
+    setState(() => isLoading = false);
+  }
+
+  Future<void> register() async {
+    setState(() => isLoading = true);
+
+    try {
+      final authRepo = ref.read(authRepositoryProvider);
+
+      await authRepo.signUpWithEmail(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: $e")),
+      );
+    }
+
+    setState(() => isLoading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.play_circle_fill,
-                size: 90,
-                color: Color(0xFF7C3AED),
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "PitokTube",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
               ),
+            ),
 
-              const SizedBox(height: 24),
+            const SizedBox(height: 40),
 
-              const Text(
-                "PitokTube",
-                style: TextStyle(
-                  fontSize: 34,
-                  fontWeight: FontWeight.bold,
-                ),
+            TextField(
+              controller: emailController,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintText: "Email",
+                hintStyle: TextStyle(color: Colors.white54),
               ),
+            ),
 
-              const SizedBox(height: 10),
+            const SizedBox(height: 20),
 
-              const Text(
-                "Pi Network doğrulanmış kullanıcılar için kısa video platformu",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                ),
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintText: "Password",
+                hintStyle: TextStyle(color: Colors.white54),
               ),
+            ),
 
-              const SizedBox(height: 40),
+            const SizedBox(height: 30),
 
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF15151C),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: const Column(
-                  children: [
-                    Icon(
-                      Icons.verified_user,
-                      color: Colors.green,
-                      size: 40,
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      "Giriş yapabilmek için Pi Network KYC doğrulamanız tamamlanmış olmalıdır.",
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-
-              const Spacer(),
-
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const BottomNavigation(),
+            isLoading
+                ? const CircularProgressIndicator()
+                : Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: login,
+                        child: const Text("Login"),
                       ),
-                    );
-                  },
-                  icon: const Icon(Icons.account_balance_wallet),
-                  label: const Text(
-                    "Pi ile Giriş Yap",
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                      const SizedBox(height: 10),
+                      OutlinedButton(
+                        onPressed: register,
+                        child: const Text("Register"),
+                      ),
+                    ],
                   ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              const Text(
-                "• Sadece KYC doğrulanmış Pi hesapları desteklenir.\n"
-                "• Giriş için Pi Browser Authentication kullanılacaktır.\n"
-                "• Pi Wallet hesabınız otomatik olarak eşleştirilecektir.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 13,
-                ),
-              ),
-
-              const SizedBox(height: 24),
-            ],
-          ),
+          ],
         ),
       ),
     );
