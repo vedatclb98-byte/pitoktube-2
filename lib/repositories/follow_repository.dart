@@ -38,4 +38,22 @@ class FollowRepository {
 
     return doc.exists;
   }
+
+  Future<int> getFollowersCount(String userId) async {
+    final snapshot = await _firestore
+        .collection("follows")
+        .where("followingId", isEqualTo: userId)
+        .get();
+
+    return snapshot.docs.length;
+  }
+
+  Future<int> getFollowingCount(String userId) async {
+    final snapshot = await _firestore
+        .collection("follows")
+        .where("followerId", isEqualTo: userId)
+        .get();
+
+    return snapshot.docs.length;
+  }
 }
