@@ -1,17 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/comment_model.dart';
 
 class CommentRepository {
-  final List<CommentModel> _comments = [];
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<List<CommentModel>> getComments(String videoId) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    final snapshot = await _firestore
+        .collection('comments')
+        .where('videoId', isEqualTo: videoId)
+        .orderBy('createdAt', descending: true)
+        .get();
 
-    return _comments.where((c) => c.videoId == videoId).toList();
+    return snapshot.docs.map((doc) {
+      return CommentModel.fromMap(doc.data());
+    }).toList();
   }
 
   Future<void> addComment(CommentModel comment) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-
-    _comments.add(comment);
+    await _firestore.collection('comments').add(comment.toMap());
   }
 }
