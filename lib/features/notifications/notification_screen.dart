@@ -5,103 +5,128 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifications = [
-      {
-        "icon": Icons.favorite,
-        "color": Colors.red,
-        "title": "Pi Creator videonu beğendi ❤️",
-        "time": "2 dk önce",
-      },
-      {
-        "icon": Icons.comment,
-        "color": Colors.blue,
-        "title": "Yeni yorum aldın 💬",
-        "time": "15 dk önce",
-      },
-      {
-        "icon": Icons.person_add,
-        "color": Colors.green,
-        "title": "Yeni takipçin var 👤",
-        "time": "1 saat önce",
-      },
-      {
-        "icon": Icons.currency_exchange,
-        "color": Colors.orange,
-        "title": "2.50 Pi bahşiş aldın 🪙",
-        "time": "Bugün",
-      },
-      {
-        "icon": Icons.workspace_premium,
-        "color": Colors.purple,
-        "title": "Creator Level XP kazandın 🚀",
-        "time": "Dün",
-      },
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Bildirimler"),
       ),
-      body: ListView.separated(
+      body: ListView(
         padding: const EdgeInsets.all(16),
-        itemCount: notifications.length,
-        separatorBuilder: (_, __) =>
-            const SizedBox(height: 12),
-        itemBuilder: (context, index) {
-          final item = notifications[index];
-                    return Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xFF15151C),
-              borderRadius: BorderRadius.circular(16),
+        children: [
+          _buildNotification(
+            icon: Icons.favorite,
+            color: Colors.red,
+            title: "Yeni Beğeni",
+            subtitle: "@pitube videonu beğendi.",
+            time: "2 dk önce",
+          ),
+
+          const SizedBox(height: 12),
+
+          _buildNotification(
+            icon: Icons.chat,
+            color: Colors.blue,
+            title: "Yeni Yorum",
+            subtitle: "Harika video! 🔥",
+            time: "10 dk önce",
+          ),
+
+          const SizedBox(height: 12),
+
+          _buildNotification(
+            icon: Icons.person_add,
+            color: Colors.green,
+            title: "Yeni Takipçi",
+            subtitle: "@crypto_pi seni takip etti.",
+            time: "30 dk önce",
+          ),
+
+          const SizedBox(height: 12),
+                    _buildNotification(
+            icon: Icons.currency_exchange,
+            color: Colors.orange,
+            title: "Pi Bahşişi",
+            subtitle: "5 Pi bahşiş aldın. 🎉",
+            time: "1 saat önce",
+          ),
+
+          const SizedBox(height: 12),
+
+          _buildNotification(
+            icon: Icons.live_tv,
+            color: Colors.purple,
+            title: "Canlı Yayın",
+            subtitle: "@pitoktube canlı yayına başladı.",
+            time: "2 saat önce",
+          ),
+
+          const SizedBox(height: 12),
+
+          _buildNotification(
+            icon: Icons.workspace_premium,
+            color: Color(0xFF7C3AED),
+            title: "Creator Rozeti",
+            subtitle: "Tebrikler! Yeni Creator seviyesine ulaştın.",
+            time: "Bugün",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNotification({
+    required IconData icon,
+    required Color color,
+    required String title,
+    required String subtitle,
+    required String time,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF15151C),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 24,
+            backgroundColor: color.withOpacity(0.15),
+            child: Icon(
+              icon,
+              color: color,
             ),
-            child: Row(
+          ),
+
+          const SizedBox(width: 16),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundColor:
-                      (item["color"] as Color).withOpacity(0.15),
-                  child: Icon(
-                    item["icon"] as IconData,
-                    color: item["color"] as Color,
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
 
-                const SizedBox(width: 16),
+                const SizedBox(height: 4),
 
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item["title"] as String,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                Text(subtitle),
+                                const SizedBox(height: 4),
 
-                      const SizedBox(height: 6),
-
-                      Text(
-                        item["time"] as String,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
+                Text(
+                  time,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
                   ),
-                ),
-
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.chevron_right),
                 ),
               ],
             ),
-          );
-                  },
+          ),
+        ],
       ),
     );
   }
