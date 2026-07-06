@@ -1,37 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+final videos = ref.watch(liveTrendingProvider);
 
-import '../../providers/video_provider.dart';
-import 'widgets/video_card.dart';
+return StreamBuilder(
+  stream: videos,
+  builder: (context, snapshot) {
+    if (!snapshot.hasData) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-class TrendingScreen extends ConsumerWidget {
-  const TrendingScreen({super.key});
+    final list = snapshot.data!;
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final videos = ref.watch(trendingFeedProvider);
-
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text("Trending 🔥"),
-        backgroundColor: Colors.black,
-      ),
-      body: videos.when(
-        data: (list) {
-          return PageView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              return VideoCard(video: list[index]);
-            },
-          );
-        },
-        loading: () =>
-            const Center(child: CircularProgressIndicator()),
-        error: (e, _) =>
-            Center(child: Text("Hata: $e")),
-      ),
+    return PageView.builder(
+      scrollDirection: Axis.vertical,
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        return VideoCard(video: list[index]);
+      },
     );
-  }
-}
+  },
+);
